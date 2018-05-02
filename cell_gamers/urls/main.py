@@ -18,5 +18,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'api/v1/', include('kfp.url_conf.urls_api_v1', namespace='api-v1')),
+    path(r'api/v1/', include(('cell_gamers.urls.api_v1', 'api-v1'))),
 ]
