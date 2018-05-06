@@ -44,13 +44,13 @@ class GameTaskManager:
     def __init__(self, gamer: Gamer):
         self.gamer = gamer
 
-    def start(self, task_type: int) -> bool:
+    def start(self, task_type: int) -> int:
         """
         Start the task.
 
         If task is already running raise TaskAlreadyRunningError.
 
-        :return: True if started successfully
+        :return: time-to-live in seconds
         """
         key = self.build_key(task_type)
         value = 'Task {} running!'.format(task_type)
@@ -61,8 +61,8 @@ class GameTaskManager:
                 "Task `{key}` is already running!".format(key=key)
             )
 
-        resp = redis.set(key, value, timeout=ttl)
-        return resp
+        redis.set(key, value, timeout=ttl)
+        return ttl
 
     def stop(self, task_type: int):
         key = self.build_key(task_type)
