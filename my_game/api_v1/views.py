@@ -43,12 +43,15 @@ class MyTasksList(APIView):
 
 
 class MyTasksDetail(APIView):
+    permission_classes = (IsAuthenticated,)
 
-    def delete(self, request):
+    def delete(self, request, task_type):
         """
         Kill gamer's running task.
         """
-        return Response({})
+        gamer = Gamer(request.user)
+        gamer.tasks.stop(task_type)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 my_tasks_list_view = MyTasksList.as_view()
