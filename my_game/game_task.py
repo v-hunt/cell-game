@@ -1,6 +1,5 @@
 from typing import Union, List
 from random import randint
-from collections import namedtuple
 
 from django.core.cache import cache as redis
 
@@ -125,25 +124,6 @@ class GameTaskManager:
     def _stringify_task(self, task_type: int, ttl: int):
         return "Type: {}, time left: {}s".format(task_type, ttl)
 
-    def _parse_key(self, key: str) -> namedtuple:
-        """
-        Extract location_x, location_y, username, task_type from the given string.
-        """
-        parsed_str = namedtuple('parsed_str', [
-            'location_x',
-            'location_y',
-            'username',
-            'task_type',
-        ])
-
-        split_str = key.split("-")
-
-        return parsed_str(
-            location_x=split_str[1],
-            location_y=split_str[3],
-            username=split_str[4],
-            task_type=split_str[-1],
-        )
 
 
 
