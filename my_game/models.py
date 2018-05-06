@@ -60,6 +60,13 @@ class Gamer(models.Model):
         # that's impossible to have two gamers in the same location
         unique_together = ('user', 'location_x', 'location_y')
 
+    def __str__(self):
+        return "{username} on (x, y)".format(
+            username=self.user.username,
+            x=self.location_x,
+            y=self.location_y,
+        )
+
     def save(self, *args, **kwargs):
         # we always choose new location if the current is already taken by someone:
         while True:
