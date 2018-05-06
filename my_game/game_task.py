@@ -1,3 +1,4 @@
+from typing import Union, List
 from random import randint
 from collections import namedtuple
 
@@ -108,6 +109,21 @@ class GameTaskManager:
             task_type,
         ])
         return '-'.join(stringified_args)
+
+    def get_task_stringified(self, task_type) -> Union[str, None]:
+        ttl = self.get_ttl(task_type)
+        if ttl > 0:
+            return self._stringify_task(task_type, ttl)
+
+    def get_all_task_stringified(self) -> List[str]:
+        return [
+            self.get_task_stringified(task_type)
+            for task_type in GameTaskType.TYPES
+            if self.get_task_stringified(task_type) is not None
+        ]
+
+    def _stringify_task(self, task_type: int, ttl: int):
+        return "Type: {}, time left: {}s".format(task_type, ttl)
 
     def _parse_key(self, key: str) -> namedtuple:
         """

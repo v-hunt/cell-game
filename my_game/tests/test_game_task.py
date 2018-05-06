@@ -14,6 +14,8 @@ from my_game.models import Gamer
 
 class GameTaskManagerTestCase(TestCase):
 
+    # fixme: make test more DRY
+
     @classmethod
     def setUpTestData(cls):
         cls.john = John.create()
@@ -71,4 +73,51 @@ class GameTaskManagerTestCase(TestCase):
         self.assertGreater(
             self.task_manager.get_ttl(task_type), 0,
             "`get_ttl` method isn't working!"
+        )
+
+    def test_get_stringified_task(self):
+
+        with self.subTest("Test None case"):
+            self.assertIsNone(
+                self.task_manager.get_task_stringified(4)
+            )
+
+        with self.subTest("Test not None case"):
+            task_type = 4
+            self.task_manager.start(task_type)
+
+            stringified_task = self.task_manager.get_task_stringified(task_type)
+
+            self.assertTrue(
+                type(stringified_task)
+            )
+
+    def test_get_all_task_stringified(self):
+
+        with self.subTest("Return empty list case"):
+            self.assertEqual(
+                self.task_manager.get_all_task_stringified(),
+                [],
+                "Not empty list returned when no tasks are running!"
+            )
+
+        with self.subTest("Return NOT empty list case"):
+            # this is a smoke test...
+            task_types = [1, 2, 3]
+
+            for task_type in task_types:
+                self.task_manager.start(task_type)
+
+            all_stringified_tasks = self.task_manager.get_all_task_stringified()
+
+            self.assertEqual(
+                len(all_stringified_tasks),
+                3
+            )
+
+    def test__stringify_task(self):
+        self.assertEqual(
+            self.task_manager._stringify_task(555, 777),
+            "Type: 555, time left: 777s",
+            "Task stringified not properly!"
         )
