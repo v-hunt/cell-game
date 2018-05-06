@@ -26,7 +26,7 @@ class Gamer:
             gamer = GamerModel.objects.create(user=user)
 
         else:
-            gamer = GamerModel.from_user(user)
+            gamer = user.gamer
 
             if not GameTaskManager(gamer).running_tasks():
                 gamer.set_new_location()
