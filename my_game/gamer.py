@@ -11,7 +11,7 @@ class Gamer:
 
     def __init__(self, user):
         self.gamer = Gamer._setup_gamer(user)
-        self.task_manager = GameTaskManager(self.gamer)
+        self.tasks = GameTaskManager(self.gamer)
 
     @staticmethod
     def _setup_gamer(user) -> GamerModel:
@@ -37,6 +37,6 @@ class Gamer:
         """
         When gamer has running tasks we consider him as active.
         """
-        return self.task_manager.running_tasks()
+        return self.tasks.running_tasks()
 
 

@@ -36,7 +36,7 @@ class GamerTestCase(TestCase):
             )
 
         with self.subTest("test True case"):
-            john_gamer.task_manager.start(GameTaskType.TYPE_1)
+            john_gamer.tasks.start(GameTaskType.TYPE_1)
 
             self.assertTrue(
                 john_gamer.in_game()
