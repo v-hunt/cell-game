@@ -2,4 +2,5 @@ django<2.1
 djangorestframework<3.9
 ipython
 factory-boy<2.11
+django-redis
 

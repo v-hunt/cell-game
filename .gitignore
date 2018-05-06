@@ -108,3 +108,5 @@ venv.bak/
 # Pycharm files
 .idea
 
+dump.rdb
+
