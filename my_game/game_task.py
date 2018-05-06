@@ -78,7 +78,7 @@ class GameTaskManager:
         key = self.build_key(task_type)
         return redis.ttl(key)
 
-    def is_task_active(self, task_type: int) -> bool:
+    def is_running(self, task_type: int) -> bool:
         ttl = self.get_ttl(task_type)
         if ttl == 0:
             return False
@@ -131,11 +131,11 @@ class GameTaskManager:
         """
         Check if gamer has some tasks running..
         """
-        active_tasks_flags = [
-            self.is_task_active(task_type)
+        running_tasks_flags = [
+            self.is_running(task_type)
             for task_type in GameTaskType.TYPES
         ]
-        return any(active_tasks_flags)
+        return any(running_tasks_flags)
 
 
 

@@ -155,7 +155,7 @@ class MyTasksDetailTestCase(APITestCase):
 
         with self.subTest("Test task is stopped"):
             self.assertFalse(
-                self.john_gamer.tasks.is_task_active(self.task_type)
+                self.john_gamer.tasks.is_running(self.task_type)
             )
 
 
