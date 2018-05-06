@@ -1,9 +1,8 @@
-import datetime as dt
-from random import randint, randrange
+from random import randrange
 
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
-from django.utils.timezone import now
+from django.db import IntegrityError
 from django.contrib.auth import get_user_model
 
 
@@ -61,9 +60,35 @@ class Gamer(models.Model):
         # that's impossible to have two gamers in the same location
         unique_together = ('user', 'location_x', 'location_y')
 
+    def save(self, *args, **kwargs):
+        # we always choose new location if the current is already taken by someone:
+        while True:
+            try:
+                super().save(*args, **kwargs)
+                break
+            except IntegrityError:
+                self._new_location()
+
     @classmethod
     def from_user(cls, user):
         """
         Initialize Gamer from regular User.
         """
         return Gamer.objects.get(user=user)
+
+    def set_new_location(self, save=True):
+        """
+        Set new location for the gamer on the GameGrid.
+
+        :return: new coordinates (x, y)
+        """
+
+        self._new_location()
+
+        if save is True:
+            self.save()
+
+        return self.location_x, self.location_y
+
+    def _new_location(self):
+        self.location_x, self.location_y = GameGrid.random_location()

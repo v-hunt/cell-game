@@ -34,6 +34,9 @@ class GameTaskType:
 
 
 class GameTaskManager:
+    """
+    Provide all operations with game tasks for gamer.
+    """
 
     # Fixme: add validation for task_type
     # Fixme: add logging for public methods
@@ -123,6 +126,16 @@ class GameTaskManager:
 
     def _stringify_task(self, task_type: int, ttl: int):
         return "Type: {}, time left: {}s".format(task_type, ttl)
+
+    def running_tasks(self) -> bool:
+        """
+        Check if gamer has some tasks running..
+        """
+        active_tasks_flags = [
+            self.is_task_active(task_type)
+            for task_type in GameTaskType.TYPES
+        ]
+        return any(active_tasks_flags)
 
 
 
