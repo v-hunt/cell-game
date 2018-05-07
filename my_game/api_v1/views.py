@@ -54,5 +54,18 @@ class MyTasksDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+class GameField(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request):
+        """
+        Get gamer's field.
+        """
+        gamer = Gamer(request.user)
+        data = gamer.show_game_field()
+        return Response(data, status=status.HTTP_200_OK)
+
+
 my_tasks_list_view = MyTasksList.as_view()
 my_tasks_detail_view = MyTasksDetail.as_view()
+game_field_view = GameField.as_view()
