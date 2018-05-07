@@ -1,9 +1,13 @@
+import logging
 from typing import Union, List
 from random import randint
 
 from django.core.cache import cache as redis
 
 from .models import Gamer
+
+
+logger = logging.getLogger(__name__)
 
 
 class GameTaskDuration:
@@ -62,11 +66,23 @@ class GameTaskManager:
             )
 
         redis.set(key, value, timeout=ttl)
+
+        logger.info(
+            "{} started task of type {}; ttl={}".format(
+                str(self.gamer.user), task_type, ttl,
+            )
+        )
         return ttl
 
     def stop(self, task_type: int):
         key = self.build_key(task_type)
         redis.delete(key)
+
+        logger.info(
+            "{} stopped task of type {}".format(
+                str(self.gamer.user), task_type,
+            )
+        )
 
     def get_ttl(self, task_type):
         """
