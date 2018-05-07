@@ -1,15 +1,10 @@
 from django.test import TestCase
 from django_redis import get_redis_connection
-from django.core.cache import cache as redis
 
 from base.tests.factories import John, ActiveUser
 from my_game.game_task import (
-    GameTaskDuration,
-    TaskAlreadyRunningError,
     GameTaskType,
-    GameTaskManager,
 )
-from my_game.models import Gamer as GamerModel
 from my_game.gamer import Gamer
 
 
@@ -18,9 +13,6 @@ class GamerTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.john = John.create()
-
-    # def setUp(self):
-    #     self.john = John.create()
 
     def tearDown(self):
         get_redis_connection("default").flushall()
