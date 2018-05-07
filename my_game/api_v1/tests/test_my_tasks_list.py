@@ -53,7 +53,10 @@ class MyTasksListTestCase(APITestCase):
             "Not auth user has access to MyTasksList!"
         )
 
-    def test_create_task(self):
+    def test_post(self):
+        """
+        Test create game task via API.
+        """
         self.client.force_login(self.john)
 
         with self.subTest("Test start task success"):
@@ -73,7 +76,10 @@ class MyTasksListTestCase(APITestCase):
                 status.HTTP_409_CONFLICT
             )
 
-    def test_get_list_of_tasks(self):
+    def test_get(self):
+        """
+        Test get list of user's running game tasks.
+        """
         task_types = [1, 2]
 
         for task_type in task_types:
