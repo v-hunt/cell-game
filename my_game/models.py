@@ -68,6 +68,16 @@ class Gamer(models.Model):
             y=self.location_y,
         )
 
+    @property
+    def location_str(self):
+        """
+        Get current location on the game grid in string format.
+
+        Example:
+            (55, 105)
+        """
+        return "({}, {})".format(self.location_x, self.location_y)
+
     def save(self, *args, **kwargs):
         # we always choose new location if the current is already taken by someone:
         while True:
