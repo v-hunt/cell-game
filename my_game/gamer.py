@@ -39,4 +39,41 @@ class Gamer:
         """
         return self.tasks.running_tasks()
 
+    def show_game_field(self):
+        """
+        Return gamers from the game field of size 33x33 and their running
+        tasks in str format.
+        """
+        half_of_game_field = self.GAME_FIELD_SIZE // 2
+
+        location_x = self.gamer.location_x
+        location_y = self.gamer.location_y
+
+        x_border_min = location_x - half_of_game_field if location_x - half_of_game_field >= 0 else 0
+        x_border_max = location_x + half_of_game_field if location_x + half_of_game_field <= GameGrid.MAX_X else GameGrid.MAX_X
+        y_border_min = location_y - half_of_game_field if location_y - half_of_game_field >= 0 else 0
+        y_border_max = location_y + half_of_game_field if location_y + half_of_game_field <= GameGrid.MAX_Y else GameGrid.MAX_Y
+
+        gamers_from_field = GamerModel.objects.filter(
+            location_x__gte=x_border_min,
+            location_x__lte=x_border_max,
+            location_y__gte=y_border_min,
+            location_y__lte=y_border_max,
+        )
+
+        res = []
+
+        def in_game(gamer):
+            return GameTaskManager(gamer).running_tasks()
+
+        for gamer in gamers_from_field:
+            if in_game(gamer) and gamer.user != self.gamer.user :
+                res.append({
+                    'gamer': gamer.user.username,
+                    'location': gamer.location_str,
+                    'tasks': GameTaskManager(gamer).get_all_task_stringified(),
+                })
+
+        return res
+
 
