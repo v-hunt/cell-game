@@ -3,4 +3,5 @@ djangorestframework<3.9
 ipython
 factory-boy<2.11
 django-redis
+django-rest-auth
 
